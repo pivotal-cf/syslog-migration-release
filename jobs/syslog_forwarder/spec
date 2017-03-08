@@ -103,3 +103,7 @@ properties:
   syslog.blackbox.limit_cpu:
     description: limit goprocess to a single cpu via gomaxprocs
     default: true
+
+  syslog.migration.disabled:
+    description: If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job)
+    default: false

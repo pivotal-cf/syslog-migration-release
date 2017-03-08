@@ -1,0 +1,3 @@
+REM test blackbox is not running
+bosh ssh storer -c '! sudo /var/vcap/bosh/bin/monit summary | grep blackbox' \
+  || failed 'The blackbox service is running'

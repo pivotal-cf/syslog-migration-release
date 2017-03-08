@@ -1,3 +1,13 @@
+# PCF Syslog Migration Release
+
+This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide their own log forwarding implementation into a world where syslog responsibilities are more centralized. Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. All customizations must be configured via `syslog.migration.*` properties). Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
+
+ * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job).
+
+
+---
+
+
 # Syslog BOSH Release
 
 This is a BOSH release to forward local syslog events in [RFC5424](https://tools.ietf.org/html/rfc5424) format to a remote syslog endpoint. It currently uses [rsyslog](http://www.rsyslog.com/) which is pre-installed by the stemcell.

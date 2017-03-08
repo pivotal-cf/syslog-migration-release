@@ -2,5 +2,5 @@
 blobstore:
   provider: s3
   options:
-    bucket_name: syslog-release-blobs
-final_name: syslog
+    bucket_name: syslog-migration-release-blobs
+final_name: syslog-migration

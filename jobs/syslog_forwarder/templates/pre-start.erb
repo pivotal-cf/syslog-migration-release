@@ -10,6 +10,10 @@ chmod 0755 ${LOGDIR}
 mkdir -p /var/vcap/data/syslog_forwarder/buffered
 chown -R syslog:adm /var/vcap/data/syslog_forwarder/buffered
 
+<% if p('syslog.migration.disabled') == true %>
+exit
+<% end %>
+
 mkdir -p /etc/rsyslog.d
 cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/rsyslog.conf
 service rsyslog restart
