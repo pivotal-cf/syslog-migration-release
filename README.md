@@ -1,8 +1,12 @@
 # PCF Syslog Migration Release
 
-This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide their own log forwarding implementation into a world where syslog responsibilities are more centralized. Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. All customizations must be configured via `syslog.migration.*` properties). Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
+This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide their own log forwarding implementation into a world where syslog responsibilities are more centralized. Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. All customizations must be configured via `syslog.migration.*` properties) and those defaults must be equivalent to the upstream defaults. Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
 
  * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job).
+ * `syslog.migration.message_format` - The message format used to send messages to remote endpoints. If no value is set, uses the upstream default.
+     * default - structured data of `[instance@47450 director="%s" deployment="%s" group="%s" az="%s" id="%s"]`
+     * `job_index` - structured data of `[job=%s index=%d]`
+     * `job_index_id` - structured data of `[job=%s index=%d id=%s]`
 
 
 ---

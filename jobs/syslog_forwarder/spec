@@ -107,3 +107,10 @@ properties:
   syslog.migration.disabled:
     description: If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job)
     default: false
+  syslog.migration.message_format:
+    description: The message format used to send messages to remote endpoints. If no value is set, uses the upstream default.
+    # if the upstream format changes, only then introduce a new format here (e.g. rfc5424)
+    default: ~
+    enum:
+      - job_index
+      - job_index_id
