@@ -4,4 +4,5 @@ blobstore:
   options:
     bucket_name: syslog-migration-release-blobs
     endpoint: https://s3-eu-west-1.amazonaws.com
+    region: eu-west-1
 final_name: syslog-migration
