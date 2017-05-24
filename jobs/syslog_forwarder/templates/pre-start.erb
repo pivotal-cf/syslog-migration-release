@@ -12,10 +12,4 @@ chown -R syslog:adm /var/vcap/data/syslog_forwarder/buffered
 
 mkdir -p /etc/rsyslog.d
 cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/rsyslog.conf
-
-<% if p('syslog.migration.disabled') == true %>
-  service rsyslog stop
-<% else %>
-  service rsyslog restart
-<% end %>
-
+service rsyslog restart
