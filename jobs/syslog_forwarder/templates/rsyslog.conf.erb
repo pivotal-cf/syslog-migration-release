@@ -61,9 +61,11 @@ template(name="SyslogForwarderTemplate" type="list") {
   property(name="msgid")
 <% if_p('syslog.migration.message_format') do |message_format| %>
 <%   if message_format == 'job_index' %>
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %>] ")
+  constant(value=" - ")
+  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %>] ")
 <%   elsif message_format == 'job_index_id' %>
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
+  constant(value=" - ")
+  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
 <%   else %>
 <%     raise "unknown syslog.migration.message_format: #{message_format}" %>
 <%   end %>

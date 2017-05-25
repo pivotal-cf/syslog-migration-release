@@ -4,5 +4,5 @@ REM emit a test message we can track
 bosh ssh forwarder "logger test-migration-format"
 
 REM test our message has job_index formatting
-bosh ssh storer -c "grep -E '<13>1 [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]+\\+00:00 $forwarder_ip bosh_[^ ]+ \\- \\- \\[job=forwarder index=0\\]  test-migration-format' /var/vcap/store/syslog_storer/syslog.log" \
+bosh ssh storer -c "grep -E '<13>1 [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]+\\+00:00 $forwarder_ip bosh_[^ ]+ \\- \\- \\- \\[job=forwarder index=0\\]  test-migration-format' /var/vcap/store/syslog_storer/syslog.log" \
   || failed 'Finding job_index-formatted log message'
