@@ -3,6 +3,9 @@
 set -eu
 set -o pipefail
 
+# Uncomment this if bosh cli v2 is named boshgo in your PATH
+# bosh() { boshgo "$@"; }
+
 tests_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 repo_dir="$tests_dir/.."
 
