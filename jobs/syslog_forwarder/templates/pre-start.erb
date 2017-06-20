@@ -12,4 +12,5 @@ chown -R syslog:adm /var/vcap/data/syslog_forwarder/buffered
 
 mkdir -p /etc/rsyslog.d
 cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/rsyslog.conf
+cp $(dirname $0)/../config/insistent_rsyslog.conf /etc/rsyslog.d/insistent_rsyslog.conf
 service rsyslog restart

@@ -1,0 +1,7 @@
+REM Check that the insistent syslog conf was copied into place
+bosh ssh forwarder "[[ -f /etc/rsyslog.d/insistent_rsyslog.conf ]]" \
+  || failed 'The insistent_rsyslog.conf seems to not have been copied into place'
+
+REM Check that there are no custom rules that we did not configure
+bosh ssh forwarder '[[ $(wc -l < /etc/rsyslog.d/insistent_rsyslog.conf | tr -s " " | cut -d " " -f 2) -eq 5 ]]' \
+  || failed 'The insistent_rsyslog.conf seems to have been templated despite the default being empty'

@@ -3,8 +3,9 @@
 set -eu
 set -o pipefail
 
-# Uncomment this if bosh cli v2 is named boshgo in your PATH
-# bosh() { boshgo "$@"; }
+BOSH=${BOSH:-'bosh'} # Allow the user to override the path to the bosh v2 CLI
+BOSH=$(which "$BOSH") # Avoid infinite loops
+bosh() { "$BOSH" "$@"; } # Works even for scripts called by this script, and so on
 
 tests_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 repo_dir="$tests_dir/.."

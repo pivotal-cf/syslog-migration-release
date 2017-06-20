@@ -4,6 +4,7 @@ name: syslog_forwarder
 templates:
   pre-start.erb: bin/pre-start
   rsyslog.conf.erb: config/rsyslog.conf
+  insistent_rsyslog.conf.erb: config/insistent_rsyslog.conf
   ca_cert.pem.erb: config/ca_cert.pem
   blackbox_ctl.erb: bin/blackbox_ctl
   blackbox_config.yml.erb: config/blackbox_config.yml
@@ -114,3 +115,6 @@ properties:
     enum:
       - job_index
       - job_index_id
+  syslog.migration.insistent_custom_rule:
+    description: Rule to use even when the syslog migration is disabled.
+    default: ""
