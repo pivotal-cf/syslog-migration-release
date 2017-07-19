@@ -11,6 +11,16 @@ mkdir -p /var/vcap/data/syslog_forwarder/buffered
 chown -R syslog:adm /var/vcap/data/syslog_forwarder/buffered
 
 mkdir -p /etc/rsyslog.d
+<%
+  p("syslog.migration.cleanup_conf_files").each do |file|
+    path = "/etc/rsyslog.d/#{file}"
+    if File.dirname(path) == "/etc/rsyslog.d"
+%>
+rm -f <%= path %>
+<%
+    end
+  end
+%>
 cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/rsyslog.conf
 cp $(dirname $0)/../config/insistent_rsyslog.conf /etc/rsyslog.d/insistent_rsyslog.conf
 service rsyslog restart
