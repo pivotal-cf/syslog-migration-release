@@ -118,3 +118,6 @@ properties:
   syslog.migration.insistent_custom_rule:
     description: Rule to use even when the syslog migration is disabled.
     default: ""
+  syslog.migration.cleanup_conf_files:
+    description: List of filenames to remove from /etc/rsyslog.d/
+    default: []
