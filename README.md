@@ -9,7 +9,7 @@ This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-releas
      * `job_index` - structured data of `-`  and `[job=%s index=%d]` prefixed in the message
      * `job_index_id` - structured data of `-` and `[job=%s index=%d id=%s]` prefixed in the message
 
-
+ * `syslog.migration.cleanup_conf_files` - List of filenames to remove from /etc/rsyslog.d/
 ---
 
 
