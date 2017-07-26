@@ -111,10 +111,11 @@ properties:
   syslog.migration.message_format:
     description: The message format used to send messages to remote endpoints. If no value is set, uses the upstream default.
     # if the upstream format changes, only then introduce a new format here (e.g. rfc5424)
-    default: ~
+    default: rfc5424
     enum:
-      - job_index
-      - job_index_id
+    - rfc5424
+    - job_index
+    - job_index_id
   syslog.migration.insistent_custom_rule:
     description: Rule to use even when the syslog migration is disabled.
     default: ""

@@ -50,22 +50,10 @@ $UDPServerRun 514
 # following https://tools.ietf.org/html/rfc5424#section-6
 template(name="SyslogForwarderTemplate" type="list") {
 
-<% if_p('syslog.migration.message_format') do |message_format| %>
-  constant(value="<")
-  property(name="pri")
-  constant(value=">")
-  property(name="timestamp" dateFormat="rfc3339")
-  constant(value=" <%= spec.address %> ")
-  property(name="programname")
-<%   if message_format == 'job_index' %>
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %>] ")
-<%   elsif message_format == 'job_index_id' %>
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
-<%   else %>
-<%     raise "unknown syslog.migration.message_format: #{message_format}" %>
-<%   end %>
-  property(name="msg")
-<% end.else do %>
+<%
+  case p('syslog.migration.message_format')
+  when 'rfc5424'
+%>
   constant(value="<")
   property(name="pri")
   constant(value=">1 ")
@@ -79,7 +67,29 @@ template(name="SyslogForwarderTemplate" type="list") {
   # 47450 is CFF in https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
   constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"] ")
   property(name="msg")
-<% end %>
+<% when 'job_index' %>
+  constant(value="<")
+  property(name="pri")
+  constant(value=">")
+  property(name="timestamp" dateFormat="rfc3339")
+  constant(value=" <%= spec.address %> ")
+  property(name="programname")
+  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %>] ")
+  property(name="msg")
+<% when 'job_index_id' %>
+  constant(value="<")
+  property(name="pri")
+  constant(value=">")
+  property(name="timestamp" dateFormat="rfc3339")
+  constant(value=" <%= spec.address %> ")
+  property(name="programname")
+  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
+  property(name="msg")
+<%
+  else
+    raise "unknown syslog.migration.message_format: #{p('syslog.migration.message_format')}"
+  end
+%>
 
 }
 

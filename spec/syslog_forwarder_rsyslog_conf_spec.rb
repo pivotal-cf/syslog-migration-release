@@ -27,8 +27,16 @@ RSpec.describe 'syslog_forwarder rsyslog.conf' do
     }
   end
 
+  it 'defaults to rsyslog beinge configured with the RFC5424 format' do
+    manifest = generate_manifest(minimum_manifest)
+    actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
+
+    expected_message_format = Fixtures.read('rsyslog_with_rfc5424_format.conf')
+    expect(actual_template).to include expected_message_format
+  end
+
   it 'allows rsyslog to be configured with the RFC5424 format' do
-    manifest = generate_manifest_with_message_format(minimum_manifest, nil)
+    manifest = generate_manifest_with_message_format(minimum_manifest, 'rfc5424')
     actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
 
     expected_message_format = Fixtures.read('rsyslog_with_rfc5424_format.conf')
