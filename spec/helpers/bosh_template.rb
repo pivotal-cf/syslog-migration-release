@@ -13,6 +13,9 @@ module BoshTemplate
 
   def self.renderer_context(job_name, manifest, links)
     context = self.merge_job_spec_defaults(job_name, manifest)
+    context['job'] = { 'name' => job_name }
+    context['index'] = 13
+    context['id'] = 'instance-id'
     context['links'] = links
     context
   end

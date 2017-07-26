@@ -19,3 +19,10 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 end
+
+module Fixtures
+  def self.read(filename)
+    path = File.expand_path(File.join(File.dirname(__FILE__), "fixtures", filename))
+    File.read(path)
+  end
+end
