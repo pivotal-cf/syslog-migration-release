@@ -5,7 +5,7 @@ This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-releas
  * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job).
  * `syslog.migration.insistent_custom_rule` - Rule will be applied even if the above property is `true`
  * `syslog.migration.message_format` - The message format used to send messages to remote endpoints. If no value is set, uses the upstream default.
-     * default - structured data of `[instance@47450 director="%s" deployment="%s" group="%s" az="%s" id="%s"]`
+     * `rfc5424` - structured data of `[instance@47450 director="%s" deployment="%s" group="%s" az="%s" id="%s"]`. This is the default setting.
      * `job_index` - structured data of `-`  and `[job=%s index=%d]` prefixed in the message
      * `job_index_id` - structured data of `-` and `[job=%s index=%d id=%s]` prefixed in the message
 
