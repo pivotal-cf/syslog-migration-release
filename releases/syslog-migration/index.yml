@@ -2,7 +2,7 @@
 builds:
   2490d54f-62ca-4078-821b-7ece931f8537:
     version: '1'
-  02869995-da8d-4942-8a33-fa12347a242d:
+  '02869995-da8d-4942-8a33-fa12347a242d':
     version: '2'
   fe8ea19a-827b-42bc-a392-708a3382045f:
     version: '3'
@@ -14,4 +14,6 @@ builds:
     version: '6'
   fc8a6692-533b-49c9-8f52-18619bf6d562:
     version: '7'
+  731580f2-a113-40fd-b408-6f83e08d4cc0:
+    version: '8'
 format-version: '2'
