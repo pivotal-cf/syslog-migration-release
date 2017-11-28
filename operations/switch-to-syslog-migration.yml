@@ -1,0 +1,16 @@
+---
+- type: replace
+  path: /addons/name=syslog_forwarder/jobs/name=syslog_forwarder/release
+  error: |
+    This ops file requires
+    you first apply
+    cf-deployment/operations/addons/enable-component-syslog.yml
+  value: syslog-migration
+
+- type: replace
+  path: /releases/name=syslog
+  value:
+    name: syslog-migration
+    version: '10'
+    sha1: 9642c53760658120c7a1b71554344334283a9425
+    url: https://github.com/pivotal-cf/syslog-migration-release/releases/download/v10/syslog-migration-10.tgz
