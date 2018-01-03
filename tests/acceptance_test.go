@@ -142,7 +142,8 @@ var _ = Describe("Forwarding loglines to a TCP syslog drain", func() {
 		})
 
 		TestSharedBehavior()
-		PIt("fowards messages of over 1KB", func() {
+
+		It("fowards messages of over 1KB", func() {
 			message := counterString(1025, "A")
 
 			Eventually(WriteToTestFile(message)).Should(gbytes.Say(message))
