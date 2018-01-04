@@ -47,6 +47,11 @@ $ModLoad imudp
 $UDPServerAddress 127.0.0.1
 $UDPServerRun 514
 
+<% if p('syslog.use_tcp_for_file_forwarding_local_transport') %>
+$ModLoad imtcp
+$InputTCPServerRun 514
+<% end %>
+
 # following https://tools.ietf.org/html/rfc5424#section-6
 template(name="SyslogForwarderTemplate" type="list") {
 
@@ -65,7 +70,8 @@ template(name="SyslogForwarderTemplate" type="list") {
   constant(value=" ")
   property(name="msgid")
   # 47450 is CFF in https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
-  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"] ")
+  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"]")
+  property(name="msg" spifno1stsp="on" )
   property(name="msg")
 <% when 'job_index' %>
   constant(value="<")

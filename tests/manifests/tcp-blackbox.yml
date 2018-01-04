@@ -19,6 +19,9 @@ instance_groups:
     jobs:
       - name: "syslog_forwarder"
         release: syslog-migration
+    properties:
+      syslog:
+        use_tcp_for_file_forwarding_local_transport: true
   - name: "storer"
     instances: 1
     vm_type: "default"

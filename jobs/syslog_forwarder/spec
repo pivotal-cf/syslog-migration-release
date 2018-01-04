@@ -25,6 +25,15 @@ properties:
   syslog.forward_files:
     description: If enabled, use BlackBox to forward logs.
     default: true
+  syslog.use_tcp_for_file_forwarding_local_transport:
+    description: >
+      If enabled, Blackbox will use TCP rather than UDP
+      when forwarding loglines from files
+      to the local rsyslog.
+      Does not affect forwarding to remote addresses.
+      This prevents truncation of log lines over 1KB,
+      but may have undesirable performance impact.
+    default: false
   syslog.address:
     description: IP or DNS address of the syslog server.
     example: logs4.papertrail.com
@@ -43,7 +52,12 @@ properties:
       transport: tcp
 
   syslog.custom_rule:
-    description: Custom rule for syslog event forwarder.
+    description: |
+      Custom rsyslog rule for event forwarder.
+      This will be inserted before the forwarding rule.
+      See further discussion and examples in
+      example-custom-rules.md
+      at the top level of the release repo.
     default: ""
 
   syslog.tls_enabled:
@@ -54,7 +68,10 @@ properties:
     default: ""
     example: "*.papertrail.com"
   syslog.ca_cert:
-    description: Trust these Certificate Authorities. Required if TLS is enabled.
+    description: |
+      Trusted CAs. Necessary if TLS is enabled
+      AND signing CA is not present in instance cert store.
+      Overrides instance cert store if set.
     example: |
       -----BEGIN CERTIFICATE-----
       MIIClTCCAf4CCQDc6hJtvGB8RjANBgkqhkiG9w0BAQUFADCBjjELMAkGA1UEBhMC...
