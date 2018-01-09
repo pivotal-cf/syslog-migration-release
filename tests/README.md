@@ -32,3 +32,27 @@ If you're using bosh-lite...
       --sha1=7e8d841c5f4d736285ce21a1d582a645c2830cbf \
       https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=3363.9
     $ bosh update-cloud-config <( wget -qO https://raw.githubusercontent.com/cloudfoundry/bosh-deployment/master/warden/cloud-config.yml )
+
+## ginkgo tests
+The above describe the tests original to this branch.
+In addition, there are tests using ginkgo,
+which have been backported.
+
+To run these tests,
+you'll need to setup a bosh-lite and login to it.
+If you don't have a bosh-lite running
+and aliased as `vbox` already:
+```sh
+./tests/scripts/setup-bosh-lite-for-tests.sh
+```
+
+If you don't already have BOSH credential
+environment variables in your session:
+```
+./tests/scripts/export-bosh-lite-creds.sh
+```
+
+To then run the tests locally:
+```sh
+BOSH_ENVIRONMENT=vbox ./tests/scripts/gtest
+```
