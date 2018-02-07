@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-source "https://rubygems.org"
 
-gem "rspec"
-gem "bosh_cli"
+source 'https://rubygems.org'
+
+gem 'bosh_cli'
+gem 'rspec'
