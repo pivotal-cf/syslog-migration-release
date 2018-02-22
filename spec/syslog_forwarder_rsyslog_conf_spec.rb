@@ -1,81 +1,68 @@
-require 'helpers/bosh_template'
+require 'bosh/template/test'
 
 RSpec.describe 'syslog_forwarder rsyslog.conf' do
-  let(:template_path) { 'jobs/syslog_forwarder/templates/rsyslog.conf.erb' }
-  let(:job_name) { 'syslog_forwarder' }
-  let(:minimum_manifest) do
-    <<~MINIMUM_MANIFEST
-    instance_groups:
-    - name: syslog_forwarder
-      jobs:
-      - name: syslog_forwarder
-    MINIMUM_MANIFEST
-  end
-  let(:links) do
-    {
-      "syslog_storer" => {
-        "instances" => [
-          { "address" => "my.syslog_storer.bosh" }
+  before(:all) do
+    release_path = File.join(File.dirname(__FILE__), '..')
+    release = Bosh::Template::Test::ReleaseDir.new(release_path)
+    job = release.job('syslog_forwarder')
+    @template = job.template('config/rsyslog.conf')
+    @links = [
+      Bosh::Template::Test::Link.new(
+        name: 'syslog_storer',
+        instances: [
+          Bosh::Template::Test::LinkInstance.new(address: 'my.syslog_storer.bosh')
         ],
-        "properties" => {
-          "syslog" => {
-            "port" => "some-syslog-storer-port",
-            "transport" => "relp"
+        properties: {
+          'syslog' => {
+            'port' => 'some-syslog-storer-port',
+            'transport' => 'relp'
           }
         }
-      }
-    }
+      )
+    ]
   end
 
-  it 'defaults to rsyslog beinge configured with the RFC5424 format' do
-    manifest = generate_manifest(minimum_manifest)
-    actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
+  it 'defaults to rsyslog being configured with the RFC5424 format' do
+    rsyslog_conf = @template.render({}, consumes: @links)
 
     expected_message_format = Fixtures.read('rsyslog_with_rfc5424_format.conf')
-    expect(actual_template).to include expected_message_format
+    expect(rsyslog_conf).to include expected_message_format
   end
 
   it 'allows rsyslog to be configured with the RFC5424 format' do
-    manifest = generate_manifest_with_message_format(minimum_manifest, 'rfc5424')
-    actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
+    properties = job_properties(message_format: 'rfc5424')
+    rsyslog_conf = @template.render(properties, consumes: @links)
 
     expected_message_format = Fixtures.read('rsyslog_with_rfc5424_format.conf')
-    expect(actual_template).to include expected_message_format
+    expect(rsyslog_conf).to include expected_message_format
   end
 
   it 'allows rsyslog to be configured with the job_index format' do
-    manifest = generate_manifest_with_message_format(minimum_manifest, 'job_index')
-    actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
+    properties = job_properties(message_format: 'job_index')
+    rsyslog_conf = @template.render(properties, consumes: @links)
 
     expected_message_format = Fixtures.read('rsyslog_with_job_index_format.conf')
-    expect(actual_template).to include expected_message_format
+    expect(rsyslog_conf).to include expected_message_format
   end
 
   it 'allows rsyslog to be configured with the job_index_id format' do
-    manifest = generate_manifest_with_message_format(minimum_manifest, 'job_index_id')
-    actual_template = BoshTemplate.render(template_path, job_name, manifest, links)
+    properties = job_properties(message_format: 'job_index_id')
+    rsyslog_conf = @template.render(properties, consumes: @links)
 
     expected_message_format = Fixtures.read('rsyslog_with_job_index_id_format.conf')
-    expect(actual_template).to include expected_message_format
+    expect(rsyslog_conf).to include expected_message_format
   end
 
   it 'prevents rsyslog from being configured with unknown formats' do
-    manifest = generate_manifest_with_message_format(minimum_manifest, 'crazy-format')
+    properties = job_properties(message_format: 'crazy-format')
+
     expect {
-      BoshTemplate.render(template_path, job_name, manifest, links)
+      @template.render(properties, consumes: @links)
     }.to raise_error(RuntimeError, "unknown syslog.migration.message_format: crazy-format")
   end
-end
 
-def generate_manifest(raw_manifest)
-  manifest = YAML.load(raw_manifest)
-  yield(manifest) if block_given?
-  manifest
-end
-
-def generate_manifest_with_message_format(raw_manifest, message_format)
-  generate_manifest(raw_manifest) do |manifest|
-    manifest['instance_groups'][0]['jobs'][0]['properties'] = {
+  def job_properties(message_format:)
+    {
       'syslog' => {
         'migration' => {
           'message_format' => message_format
