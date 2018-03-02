@@ -1,4 +1,5 @@
 require 'bosh/template/test'
+require 'yaml'
 
 RSpec.describe 'syslog_forwarder pre-start' do
   before(:all) do
