@@ -1,6 +1,11 @@
 # PCF Syslog Migration Release
 
-This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide their own log forwarding implementation into a world where syslog responsibilities are more centralized. Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. All customizations must be configured via `syslog.migration.*` properties) and those defaults must be equivalent to the upstream defaults. Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
+This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide 
+their own log forwarding implementation into a world where syslog responsibilities are more centralized. 
+Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. 
+If you do want to make changes to syslog-migration-release, you should add tests to     [the ruby tests](./spec) and the [acceptance tests](./tests). All customizations 
+must be configured via `syslog.migration.*` properties) and those defaults must be equivalent to the upstream defaults. 
+Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
 
  * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job).
  * `syslog.migration.insistent_custom_rule` - Rule will be applied even if the above property is `true`
@@ -195,6 +200,26 @@ The RSYSLOG configuration file is `/etc/rsyslog.conf`.
 The RSYSLOG forwarder's customizations
 are rendered into `/etc/rsyslog.d/rsyslog.conf`,
 which is included by the configuration file.
+
+## Running tests
+
+To run the [ruby tests](./spec) run 
+```
+bundle install
+bundle exec rspec
+```
+
+Important: If you want to run the acceptance tests after you have run the ruby tests you are going to have to run 
+```
+gem uninstall bosh_cli
+```
+to remove the v1.x version of bosh from your path. Then ensure your version of bosh is 2.x
+
+To run the [acceptance tests](./tests), first ensure you have a bosh deployment(preferably bosh-lite), set your BOSH_ENVIROMENT, ensure that syslog-migration-release is located in your GOPATH and then run
+```
+./scripts/test
+```
+from the tests directory. 
 
 [cf-d]: https://github.com/cloudfoundry/cf-deployment
 [forwarder-spec-page]: https://bosh.io/jobs/syslog_forwarder?source=github.com/cloudfoundry/syslog-release
