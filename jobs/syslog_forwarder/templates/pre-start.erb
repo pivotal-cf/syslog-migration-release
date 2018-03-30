@@ -21,6 +21,11 @@ rm -f <%= path %>
     end
   end
 %>
-cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/rsyslog.conf
+
+# This cleans up after legacy config locations and previous starts
+rm -f /etc/rsyslog.d/rsyslog.conf /etc/rsyslog.d/*-syslog-release*conf
+
+cp $(dirname $0)/../config/rsyslog.conf /etc/rsyslog.d/35-syslog-release.conf
 cp $(dirname $0)/../config/insistent_rsyslog.conf /etc/rsyslog.d/insistent_rsyslog.conf
+
 service rsyslog restart

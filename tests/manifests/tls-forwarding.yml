@@ -19,9 +19,10 @@ instance_groups:
     jobs:
       - name: syslog_forwarder
         release: syslog-migration
-    properties:
-      syslog:
-        use_tcp_for_file_forwarding_local_transport: true
+        properties:
+          syslog:
+            tls_enabled: true
+            ca_cert: ((syslog_ca.certificate))
   - name: storer
     instances: 1
     vm_type: default
@@ -33,6 +34,15 @@ instance_groups:
     jobs:
       - name: syslog_storer
         release: syslog-migration
+        properties:
+          syslog:
+            tls:
+              generation: ((syslog_ca))
+variables:
+  - name: syslog_ca
+    type: certificate
+    options:
+      is_ca: true
 update:
   canaries: 1
   max_in_flight: 1

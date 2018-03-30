@@ -1,7 +1,0 @@
-REM Check that the insistent syslog conf was copied into place
-bosh ssh forwarder "[[ -f /etc/rsyslog.d/insistent_rsyslog.conf ]]" \
-  || failed 'The insistent_rsyslog.conf seems to not have been copied into place'
-
-REM Check that there are no custom rules that we did not configure
-bosh ssh forwarder 'grep "local2.*  -/tmp/awesome.log" /etc/rsyslog.d/insistent_rsyslog.conf' \
-  || failed 'The insistent_rsyslog.conf file should have been templated from the insistent_custom_rule'
