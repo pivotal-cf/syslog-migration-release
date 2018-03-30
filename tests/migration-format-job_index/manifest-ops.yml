@@ -1,3 +1,0 @@
-- path: /instance_groups/name=forwarder/jobs/name=syslog_forwarder/properties?/syslog/migration/message_format
-  type: replace
-  value: job_index

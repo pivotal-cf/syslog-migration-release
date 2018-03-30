@@ -1,9 +1,0 @@
-forwarder_id=$( echo -n "$( basename "$( bosh instances | grep forwarder | cut -f1 )" )" )
-forwarder_ip=$( echo -n "$( basename "$( bosh instances | grep forwarder | cut -f4 )" )" )
-
-REM emit a test message we can track
-bosh ssh forwarder "logger test-migration-format"
-
-REM test our message has job_index_id formatting
-bosh ssh storer -c "grep -E '<13>1 [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]+\\+00:00 $forwarder_ip bosh_[^ ]+ \\- \\- \\- \\[job=forwarder index=0 id=$forwarder_id\\]  test-migration-format' /var/vcap/store/syslog_storer/syslog.log" \
-  || failed 'Finding job_index_id-formatted log message'

@@ -67,17 +67,18 @@ template(name="SyslogForwarderTemplate" type="list") {
 <% if_p('syslog.migration.message_format') do |message_format| %>
 <%   if message_format == 'job_index' %>
   constant(value=" - ")
-  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %>] ")
+  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %>]")
 <%   elsif message_format == 'job_index_id' %>
   constant(value=" - ")
-  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
+  constant(value="[job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>]")
 <%   else %>
 <%     raise "unknown syslog.migration.message_format: #{message_format}" %>
 <%   end %>
 <% end.else do %>
   # 47450 is CFF in https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
-  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"] ")
+  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"]")
 <% end %>
+  property(name="msg" spifno1stsp="on")
   property(name="msg")
 }
 
@@ -137,5 +138,7 @@ $ActionExecOnlyWhenPreviousIsSuspended off
 <% end %>
 
 # Prevent vcap.* messsages from reaching anywhere else
-:programname, startswith, "vcap." ~
+:programname, startswith, "vcap." stop
+#Prevent log lines that come from files from being re-written to disk by 50-default.conf rules.
+:procid, isequal, "rs2" stop
 <% end %>
