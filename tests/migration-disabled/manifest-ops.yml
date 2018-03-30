@@ -1,7 +1,0 @@
-- path: /instance_groups/name=forwarder/jobs/name=syslog_forwarder/properties?/syslog/migration/disabled
-  type: replace
-  value: true
-- path: /instance_groups/name=forwarder/jobs/name=syslog_forwarder/properties?/syslog/migration/insistent_custom_rule
-  type: replace
-  value: |
-    local2.*  -/tmp/awesome.log

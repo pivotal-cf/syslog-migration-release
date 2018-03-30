@@ -70,7 +70,8 @@ template(name="SyslogForwarderTemplate" type="list") {
   constant(value=" ")
   property(name="msgid")
   # 47450 is CFF in https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers
-  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"] ")
+  constant(value=" [instance@47450 director=\"<%= p('syslog.director') %>\" deployment=\"<%= spec.deployment %>\" group=\"<%= spec.job.name %>\" az=\"<%= spec.az %>\" id=\"<%= spec.id %>\"]")
+  property(name="msg" spifno1stsp="on")
   property(name="msg")
 <% when 'job_index' %>
   constant(value="<")
@@ -79,7 +80,8 @@ template(name="SyslogForwarderTemplate" type="list") {
   property(name="timestamp" dateFormat="rfc3339")
   constant(value=" <%= spec.address %> ")
   property(name="programname")
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %>] ")
+  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %>]")
+  property(name="msg" spifno1stsp="on")
   property(name="msg")
 <% when 'job_index_id' %>
   constant(value="<")
@@ -88,7 +90,8 @@ template(name="SyslogForwarderTemplate" type="list") {
   property(name="timestamp" dateFormat="rfc3339")
   constant(value=" <%= spec.address %> ")
   property(name="programname")
-  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>] ")
+  constant(value=" [job=<%= spec.job.name %> index=<%= spec.index %> id=<%= spec.id %>]")
+  property(name="msg" spifno1stsp="on")
   property(name="msg")
 <%
   else
@@ -154,5 +157,7 @@ $ActionExecOnlyWhenPreviousIsSuspended off
 <% end %>
 
 # Prevent vcap.* messsages from reaching anywhere else
-:programname, startswith, "vcap." ~
+:programname, startswith, "vcap." stop
+#Prevent log lines that come from files from being re-written to disk by 50-default.conf rules.
+:procid, isequal, "rs2" stop
 <% end %>
