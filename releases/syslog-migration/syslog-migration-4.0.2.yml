@@ -1,0 +1,29 @@
+name: syslog-migration
+version: 4.0.2
+commit_hash: 0ccc6dd
+uncommitted_changes: false
+jobs:
+- name: syslog_forwarder
+  version: 4563ce8e4add13d8b7827a95ff519a32faa8c7da
+  fingerprint: 4563ce8e4add13d8b7827a95ff519a32faa8c7da
+  sha1: 681ad09215a43cd0cdbdc56f13df047cafe1420f
+- name: syslog_storer
+  version: 55eb86fbab979ad6520d067145124d1ec543a42d
+  fingerprint: 55eb86fbab979ad6520d067145124d1ec543a42d
+  sha1: c74519837625979193ba24c237825237075b9cdf
+packages:
+- name: blackbox
+  version: 35d1337c76dd370a4c1b4d1f207372da6dcf1c84
+  fingerprint: 35d1337c76dd370a4c1b4d1f207372da6dcf1c84
+  sha1: 73a264f26cd4fddc1c72e003a94ae311040c442b
+  dependencies:
+  - golang
+- name: golang
+  version: 9a0f2c6c5309fdf664229c4fb326cb22ad69372a
+  fingerprint: 9a0f2c6c5309fdf664229c4fb326cb22ad69372a
+  sha1: b5851cfbb0b0ede24bc5677d4eee8685949b0763
+  dependencies: []
+license:
+  version: 92d787bc0daf268049dde988188dfb323c2d110e
+  fingerprint: 92d787bc0daf268049dde988188dfb323c2d110e
+  sha1: 3fbc963221daeacb6d9cb4680605295ff7f81b86
