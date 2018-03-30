@@ -21,7 +21,8 @@ instance_groups:
         release: syslog-migration
     properties:
       syslog:
-        use_tcp_for_file_forwarding_local_transport: true
+        migration:
+          disabled: true
   - name: storer
     instances: 1
     vm_type: default
