@@ -1,13 +1,22 @@
-# PCF Syslog Migration Release
+# DEPRECATED PCF Syslog Migration Release
+_This release has been depricated in favor of [syslog-release](https://github.com/cloudfoundry/syslog-release)._
 
-This is a fork of [syslog-release](https://github.com/cloudfoundry/syslog-release) to transition tiles which currently provide 
-their own log forwarding implementation into a world where syslog responsibilities are more centralized. 
-Changes should always be made in the upstream syslog release with the only exception of migration-related changes which must have a specific end of life goal. 
-If you do want to make changes to syslog-migration-release, you should add tests to     [the ruby tests](./spec) and the [acceptance tests](./tests). All customizations 
-must be configured via `syslog.migration.*` properties) and those defaults must be equivalent to the upstream defaults. 
+_Existing major versions of this release will only continue to receive security updates,
+and those only to the extent that they are included in currently supported versions of PCF._
+
+This is a fork of [syslog-release].
+It was intended to help tiles which provided their own log forwarding implementation
+transition into a world where syslog responsibilities are more centralized.
+
+Changes were made in the upstream syslog release,
+with the only exception of migration-related changes which must have a specific end of life goal. 
+If you do want to make changes to syslog-migration-release,
+you should add tests to [the ruby tests](./spec) and the [acceptance tests](./tests).
+All customizations must be configured via `syslog.migration.*` properties)
+and those defaults must be equivalent to the upstream defaults. 
 Once a tile is no longer configuring `syslog.migration.*` properties, they should switch to the upstream syslog release. Available migration properties:
 
- * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job).
+ * `syslog.migration.disabled` - If true, do not reconfigure rsyslog or forward /var/vcap/sys/log files (nearly equivalent to not installing the job). _This is the only syslog-migration-release feature still supported in syslog-release._
  * `syslog.migration.insistent_custom_rule` - Rule will be applied even if the above property is `true`
  * `syslog.migration.message_format` - The message format used to send messages to remote endpoints. If no value is set, uses the upstream default.
      * `rfc5424` - structured data of `[instance@47450 director="%s" deployment="%s" group="%s" az="%s" id="%s"]`. This is the default setting.
@@ -15,6 +24,10 @@ Once a tile is no longer configuring `syslog.migration.*` properties, they shoul
      * `job_index_id` - structured data of `-` and `[job=%s index=%d id=%s]` prefixed in the message
 
  * `syslog.migration.cleanup_conf_files` - List of filenames to remove from /etc/rsyslog.d/
+ 
+ If you need any of these capabilities in syslog-release (other than `disabled`, which is already supported),
+ please contact the syslog team using the information below, (or in `syslog-release`).
+ 
 ---
 
 
